@@ -1,28 +1,50 @@
-import { api } from "@/trpc/server";
+"use client";
+
+import { useRef, useEffect } from "react";
 
 function Dashboard() {
-	const mutate = api.logged.bms.proxyRequest.mutate({
-		path: "/",
-		method: "POST",
-	});
+	const iframeRef = useRef<HTMLIFrameElement>(null);
 
-	console.log(mutate, " ======== mutate ");
+	const formData = {
+		email: "john@example.com",
+		password: "realmadrid",
+	};
+
+	const attemptAutofill = () => {
+		const iframe = iframeRef.current;
+		if (!iframe) return;
+
+		try {
+			iframe.contentWindow?.postMessage(
+				{
+					type: "AUTOFILL_REQUEST",
+					data: formData,
+				},
+				"https://dashboard.waterhub.co.id",
+			);
+		} catch (error) {
+			console.error("Autofill error:", error);
+		}
+	};
+
+	useEffect(() => {
+		const iframe = iframeRef.current;
+		if (!iframe) return;
+		attemptAutofill();
+	}, []);
 
 	return (
-		<section className="w-full min-h-screen">
-			{/* <iframe */}
-			{/* 	key={iframeKey} */}
-			{/* 	src={bmsConfig.url} */}
-			{/* 	className="w-full h-[800px] border-0 rounded-lg" */}
-			{/* 	title="BMS Dashboard" */}
-			{/* 	allow="same-origin" */}
-			{/* 	sandbox="allow-same-origin allow-scripts allow-forms allow-popups" */}
-			{/* 	onLoad={() => { */}
-			{/* 		console.log("BMS iframe loaded"); */}
-			{/* 	}} */}
-			{/* /> */}
-
-			<p>Dashboard</p>
+		<section className="w-full min-h-screen flex flex-col justify-center items-center p-5">
+			<iframe
+				ref={iframeRef}
+				id="cross-origin-iframe"
+				src="https://dashboard.waterhub.co.id/login"
+				className="w-full max-w-4xl h-[800px] border-0 rounded-lg shadow-lg"
+				title="BMS Dashboard"
+				allow="fullscreen *;"
+				scrolling="no"
+				sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals allow-top-navigation allow-presentation"
+			/>
 		</section>
 	);
 }
