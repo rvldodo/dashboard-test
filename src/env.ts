@@ -13,6 +13,7 @@ export const env = createEnv({
 		DATABASE_URL: z.string(),
 		BMS_USERNAME: z.string(),
 		BMS_PASSWORD: z.string(),
+		BMS_URL: z.string(),
 	},
 
 	client: {
@@ -27,6 +28,7 @@ export const env = createEnv({
 		NODE_ENV: process.env.NODE_ENV,
 		BMS_USERNAME: process.env.BMS_USERNAME,
 		BMS_PASSWORD: process.env.BMS_PASSWORD,
+		BMS_URL: process.env.BMS_URL,
 		NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
 		NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 		NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
